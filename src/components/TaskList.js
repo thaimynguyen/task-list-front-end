@@ -11,14 +11,13 @@ const TaskList = ({ tasks, setComplete, deleteTask }) => {
           key={task.id}
           id={task.id}
           title={task.title}
-          is_complete={task.is_complete}
+          isComplete={task.isComplete}
           setComplete={setComplete}
           deleteTask={deleteTask}
         />
       );
     });
   };
-  // console.log(tasks);
   return <ul className="tasks__list no-bullet">{getTaskListJSX(tasks)}</ul>;
 };
 
@@ -27,7 +26,7 @@ TaskList.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      is_complete: PropTypes.bool.isRequired,
+      isComplete: PropTypes.bool.isRequired,
     })
   ).isRequired,
   setComplete: PropTypes.func.isRequired,

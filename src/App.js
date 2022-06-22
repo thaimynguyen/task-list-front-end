@@ -31,8 +31,15 @@ const App = () => {
     axios
       .get('https://task-list-api-c17.herokuapp.com/tasks')
       .then((response) => {
-        setTasks(response.data);
-        console.log(response.data);
+        const updatedTasks = response.data.map((task) => {
+          return {
+            id: task.id,
+            title: task.title,
+            isComplete: task.is_complete,
+          };
+        });
+        setTasks(updatedTasks);
+        console.log(updatedTasks);
       })
       .catch((error) => {
         console.log(error);
@@ -42,18 +49,33 @@ const App = () => {
 
   const setComplete = (id) => {
     const updatedTasks = [...tasks];
-    console.log(updatedTasks);
     let targetTask;
     for (const task of updatedTasks) {
-      console.log(task);
       if (task.id === id) {
         targetTask = task;
-        console.log(targetTask);
       }
     }
+    let url;
+    if (targetTask.isComplete === true) {
+      url = `https://task-list-api-c17.herokuapp.com/tasks/${id}/mark_incomplete`;
+    } else if (targetTask.isComplete === false) {
+      url = `https://task-list-api-c17.herokuapp.com/tasks/${id}/mark_complete`;
+    }
+    axios
+      .patch(url)
+      .then(() => {
+        targetTask.isComplete = !targetTask.isComplete;
+        setTasks(updatedTasks);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(`Couldn't update task ${id}`);
+      });
   };
+
   const deleteTask = (id) => {
     console.log('made it in deletetask');
+    console.log(tasks);
     const updatedTasks = tasks.filter((task) => task.id !== id);
     console.log(updatedTasks);
     setTasks(updatedTasks);
