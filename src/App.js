@@ -1,35 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
+import axios from 'axios';
 
-const TASKS = [
-  {
-    id: 1,
-    title: 'Mow the lawn',
-    isComplete: false,
-  },
-  {
-    id: 2,
-    title: 'Cook Pasta',
-    isComplete: true,
-  },
-];
+// const TASKS = [
+//     {
+//         "description": "Task 1",
+//         "id": 152,
+//         "is_complete": false,
+//         "title": "Fena & Amy task 1"
+//     },
+//     {
+//         "description": "Task 2",
+//         "id": 153,
+//         "is_complete": false,
+//         "title": "Fena & Amy task 2"
+//     },
+//     {
+//         "description": "Task 3",
+//         "id": 154,
+//         "is_complete": false,
+//         "title": "Fena & Amy task 3"
+//     },
+// ];
 
 const App = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://task-list-api-c17.herokuapp.com/tasks')
+      .then((response) => {
+        setTasks(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Couldn't get task data");
+      });
+  }, []);
 
   const setComplete = (id) => {
-    // console.log('Made it in setComplete');
     const updatedTasks = [...tasks];
-    for (let task of updatedTasks) {
+    console.log(updatedTasks);
+    let targetTask;
+    for (const task of updatedTasks) {
       console.log(task);
       if (task.id === id) {
-        task.isComplete = !task.isComplete;
-        // console.log('made in for/if statement');
+        targetTask = task;
+        console.log(targetTask);
       }
     }
-
-    setTasks(updatedTasks);
   };
   const deleteTask = (id) => {
     console.log('made it in deletetask');
