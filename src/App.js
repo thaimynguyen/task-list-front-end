@@ -47,7 +47,7 @@ const App = () => {
         <div>
           {
             <TaskList
-              tasks={TASKS}
+              tasks={tasks}
               setComplete={setComplete}
               deleteTask={deleteTask}
             />
