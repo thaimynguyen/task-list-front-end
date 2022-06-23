@@ -1,31 +1,26 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import './Task.css';
 
-const Task = ({ id, title, is_complete, setComplete, deleteTask }) => {
+const Task = ({ id, title, isComplete, setComplete, deleteTask }) => {
   // console.log(isComplete);
   // const [complete, setComplete] = useState(isComplete);
-  const buttonClass = is_complete ? 'tasks__item__toggle--completed' : '';
+  const buttonClass = isComplete ? 'tasks__item__toggle--completed' : '';
   // console.log(buttonClass);
 
   return (
     <li className="tasks__item">
       <button
         className={`tasks__item__toggle ${buttonClass}`}
-        onClick={() => {
-          setComplete(id);
-          console.log(id);
-        }}
+        onClick={() => setComplete(id)}
       >
         {title}
       </button>
       <button
         className="tasks__item__remove button"
-        onClick={() => {
-          deleteTask(id);
-          console.log(id);
-        }}
+        onClick={() => deleteTask(id)}
       >
         x
       </button>
@@ -36,7 +31,7 @@ const Task = ({ id, title, is_complete, setComplete, deleteTask }) => {
 Task.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  is_complete: PropTypes.bool.isRequired,
+  isComplete: PropTypes.bool.isRequired,
   setComplete: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired,
 };
