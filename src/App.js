@@ -3,27 +3,6 @@ import TaskList from './components/TaskList.js';
 import './App.css';
 import axios from 'axios';
 
-// const TASKS = [
-//     {
-//         "description": "Task 1",
-//         "id": 152,
-//         "is_complete": false,
-//         "title": "Fena & Amy task 1"
-//     },
-//     {
-//         "description": "Task 2",
-//         "id": 153,
-//         "is_complete": false,
-//         "title": "Fena & Amy task 2"
-//     },
-//     {
-//         "description": "Task 3",
-//         "id": 154,
-//         "is_complete": false,
-//         "title": "Fena & Amy task 3"
-//     },
-// ];
-
 const App = () => {
   const [tasks, setTasks] = useState([]);
 
@@ -74,11 +53,16 @@ const App = () => {
   };
 
   const deleteTask = (id) => {
-    console.log('made it in deletetask');
-    console.log(tasks);
-    const updatedTasks = tasks.filter((task) => task.id !== id);
-    console.log(updatedTasks);
-    setTasks(updatedTasks);
+    axios
+      .delete(`https://task-list-api-c17.herokuapp.com/tasks/${id}`)
+      .then(() => {
+        const updatedTasks = tasks.filter((task) => task.id !== id);
+        setTasks(updatedTasks);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(`Couldn't update task ${id}`);
+      });
   };
 
   return (
