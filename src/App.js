@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TaskList from './components/TaskList.js';
+import NewTaskForm from './components/NewTaskForm.js';
 import './App.css';
 import axios from 'axios';
 
@@ -7,6 +8,10 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
+    getTasksFromAPI();
+  }, []);
+
+  const getTasksFromAPI = () => {
     axios
       .get('https://task-list-api-c17.herokuapp.com/tasks')
       .then((response) => {
@@ -18,13 +23,12 @@ const App = () => {
           };
         });
         setTasks(updatedTasks);
-        console.log(updatedTasks);
       })
       .catch((error) => {
         console.log(error);
         console.log("Couldn't get task data");
       });
-  }, []);
+  };
 
   const setComplete = (id) => {
     const updatedTasks = [...tasks];
@@ -45,6 +49,7 @@ const App = () => {
       .then(() => {
         targetTask.isComplete = !targetTask.isComplete;
         setTasks(updatedTasks);
+        // getTasksFromAPI();
       })
       .catch((error) => {
         console.log(error);
@@ -58,6 +63,7 @@ const App = () => {
       .then(() => {
         const updatedTasks = tasks.filter((task) => task.id !== id);
         setTasks(updatedTasks);
+        // getTasksFromAPI();
       })
       .catch((error) => {
         console.log(error);
@@ -65,6 +71,15 @@ const App = () => {
       });
   };
 
+  const makeNewTask = (data) => {
+    axios
+      .post('https://task-list-api-c17.herokuapp.com/tasks', data)
+      .then(() => getTasksFromAPI())
+      .catch((error) => {
+        console.log(error);
+        console.log("Couldn't add a new task");
+      });
+  };
   return (
     <div className="App">
       <header className="App-header">
@@ -72,13 +87,12 @@ const App = () => {
       </header>
       <main>
         <div>
-          {
-            <TaskList
-              tasks={tasks}
-              setComplete={setComplete}
-              deleteTask={deleteTask}
-            />
-          }
+          <TaskList
+            tasks={tasks}
+            setComplete={setComplete}
+            deleteTask={deleteTask}
+          />
+          <NewTaskForm handleSubmission={makeNewTask} />
         </div>
       </main>
     </div>
