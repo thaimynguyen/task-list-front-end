@@ -15,6 +15,7 @@ const NewTaskForm = (props) => {
     newTaskData[name] = value;
     setTaskData(newTaskData);
   };
+
   const handleFormSubmission = (event) => {
     event.preventDefault();
     props.handleSubmission(taskData);
@@ -28,7 +29,7 @@ const NewTaskForm = (props) => {
         value={taskData.title}
         onChange={handleFormInput}
       />
-      <label htmlFor="descriptio">Description</label>
+      <label htmlFor="description">Description</label>
       <input
         name="description"
         type="text"
